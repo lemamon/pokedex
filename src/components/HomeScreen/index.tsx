@@ -1,34 +1,26 @@
 import React, {useEffect, useState} from 'react'
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  SafeAreaView,
-  StatusBar,
-  Text,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from 'react-native'
+import {SafeAreaView, StatusBar, useColorScheme} from 'react-native'
 
 import {Colors} from 'react-native/Libraries/NewAppScreen'
-import styles from '../../resources/styles'
 import {getData} from '../../service/api'
 import {Pokemon} from '../../types'
+import List from '../List'
 
 const HomeScreen = ({navigation}: any) => {
   const [url, setUrl] = useState("pokemon?limit=30'")
   const [list, setList] = useState<Pokemon[]>([])
   const [loading, setLoading] = useState(false)
+  const [count, setCount] = useState(1)
 
   const isDarkMode = useColorScheme() === 'dark'
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    height: '100%',
   }
-  const borderColor = isDarkMode ? Colors.white : Colors.black
-  const color = isDarkMode ? Colors.white : Colors.black
 
   const loadData = async () => {
+    if (list.length >= count) return
+
     setLoading(true)
 
     if (loading) return
@@ -43,6 +35,7 @@ const HomeScreen = ({navigation}: any) => {
 
     setList([...list, ...pokemons])
     setUrl(data.next)
+    setCount(data.count)
     setLoading(false)
   }
 
@@ -54,15 +47,6 @@ const HomeScreen = ({navigation}: any) => {
       type: data?.types?.map((el: any) => el.type.name),
       id: data.id,
     }
-  }
-
-  const renderFooter = () => {
-    if (!loading) return null
-    return (
-      <View style={styles.loading}>
-        <ActivityIndicator />
-      </View>
-    )
   }
 
   useEffect(() => {
@@ -79,47 +63,7 @@ const HomeScreen = ({navigation}: any) => {
   return (
     <SafeAreaView style={[backgroundStyle]}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <FlatList
-        data={list}
-        numColumns={2}
-        keyExtractor={item => item.name}
-        onEndReached={loadData}
-        onEndReachedThreshold={0.1}
-        ListFooterComponent={renderFooter}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            onPress={() => onPress(item)}
-            style={[
-              styles.item,
-              {
-                borderColor,
-              },
-            ]}>
-            <Image
-              style={{width: 36, height: 36, resizeMode: 'contain'}}
-              source={{uri: item.image}}
-            />
-            <View>
-              <Text
-                style={{
-                  color,
-                  fontSize: 12,
-                  textTransform: 'uppercase',
-                }}>
-                {`${item.id}#${item.name}`}
-              </Text>
-              <Text
-                style={{
-                  color,
-                  fontSize: 9,
-                  textTransform: 'uppercase',
-                }}>
-                * {item.type?.join(', ')}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+      <List data={list} fetchData={loadData} onPressItem={onPress} />
     </SafeAreaView>
   )
 }
