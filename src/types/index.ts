@@ -6,3 +6,14 @@ export type Pokemon = {
   type?: string[]
   abilities?: string[]
 }
+
+export type ListProps = {
+  data: Pokemon[]
+  fetchData: Function
+  onPressItem: Function
+}
+
+export type ItemProps = {
+  item: Pokemon
+  onPressItem: Function
+}
