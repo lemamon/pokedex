@@ -18,11 +18,16 @@ const HomeScreen = ({navigation}: Props) => {
   })
 
   const loadData = async () => {
-    if (list.length >= maxItems) return
+    if (list.length >= maxItems) {
+      return
+    }
 
     setLoading(true)
 
-    if (loading) return
+    if (loading) {
+      return
+    }
+
     setLoading(true)
     const data = await getData(url)
     const pokemons: Pokemon[] = await Promise.all(
@@ -60,7 +65,7 @@ const HomeScreen = ({navigation}: Props) => {
   }
 
   return (
-    <SafeAreaView style={[backgroundColor, homeStyles.container]}>
+    <SafeAreaView style={[{backgroundColor}, homeStyles.container]}>
       <StatusBar barStyle={barStyle} />
       <List data={list} fetchData={loadData} onPressItem={onPress} />
     </SafeAreaView>
