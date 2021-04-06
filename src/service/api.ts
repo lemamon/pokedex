@@ -1,5 +1,4 @@
 import axios from 'axios'
-import useSWR from 'swr'
 import {BASE_URL} from '../utils/constants'
 
 const api = axios.create({
