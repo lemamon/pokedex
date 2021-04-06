@@ -1,19 +1,12 @@
 import React from 'react'
-import {ActivityIndicator, FlatList, View} from 'react-native'
+import {FlatList} from 'react-native'
 
-import styles from '../../resources/styles'
 import {ListProps} from '../../types'
 import Item from '../Item'
 
-const List = ({data, fetchData, onPressItem}: ListProps) => {
-  const renderFooter = () => {
-    return (
-      <View style={styles.loading}>
-        <ActivityIndicator />
-      </View>
-    )
-  }
+import FooterLoading from '../FooterLoading'
 
+const List = ({data, fetchData, onPressItem}: ListProps) => {
   return (
     <FlatList
       data={data}
@@ -21,7 +14,7 @@ const List = ({data, fetchData, onPressItem}: ListProps) => {
       keyExtractor={item => item.name}
       onEndReached={() => fetchData()}
       onEndReachedThreshold={0.1}
-      ListFooterComponent={renderFooter}
+      ListFooterComponent={FooterLoading}
       renderItem={({item}) => <Item item={item} onPressItem={onPressItem} />}
     />
   )
