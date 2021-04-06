@@ -1,8 +1,9 @@
 import axios from 'axios'
 import useSWR from 'swr'
+import {BASE_URL} from '../utils/constants'
 
 const api = axios.create({
-  baseURL: 'https://pokeapi.co/api/v2/',
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
