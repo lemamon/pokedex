@@ -46,4 +46,8 @@ export type AppThemeProps = {
   borderColor: string
   headerTintColor: string
   barStyle: StatusBarStyle
+  homeStyles: any
+  itemStyle: any
+  detailsStyle: any
+  simpleListStyle: any
 }
