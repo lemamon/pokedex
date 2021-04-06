@@ -1,25 +1,29 @@
 import React, {useEffect, useState} from 'react'
 import {SafeAreaView, StatusBar, useColorScheme} from 'react-native'
 
-import {Colors} from 'react-native/Libraries/NewAppScreen'
+import {useAppTheme} from '../../config/theme'
 import {getData} from '../../service/api'
-import {Pokemon} from '../../types'
+import {Pokemon, Props} from '../../types'
+import {DARK_THEME, PATH_URL} from '../../utils/constants'
 import List from '../List'
 
-const HomeScreen = ({navigation}: any) => {
-  const [url, setUrl] = useState("pokemon?limit=30'")
+const HomeScreen = ({navigation}: Props) => {
+  const [url, setUrl] = useState(PATH_URL)
   const [list, setList] = useState<Pokemon[]>([])
   const [loading, setLoading] = useState(false)
-  const [count, setCount] = useState(1)
+  const [maxItems, setMaxItems] = useState(1)
 
-  const isDarkMode = useColorScheme() === 'dark'
+  const {backgroundColor, barStyle} = useAppTheme({
+    isDarkMode: useColorScheme() === DARK_THEME,
+  })
+
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor,
     height: '100%',
   }
 
   const loadData = async () => {
-    if (list.length >= count) return
+    if (list.length >= maxItems) return
 
     setLoading(true)
 
@@ -35,7 +39,7 @@ const HomeScreen = ({navigation}: any) => {
 
     setList([...list, ...pokemons])
     setUrl(data.next)
-    setCount(data.count)
+    setMaxItems(data.count)
     setLoading(false)
   }
 
@@ -62,7 +66,7 @@ const HomeScreen = ({navigation}: any) => {
 
   return (
     <SafeAreaView style={[backgroundStyle]}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <StatusBar barStyle={barStyle} />
       <List data={list} fetchData={loadData} onPressItem={onPress} />
     </SafeAreaView>
   )

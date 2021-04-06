@@ -8,13 +8,15 @@ import {createStackNavigator} from '@react-navigation/stack'
 import {capitalize} from '../../utils/utils'
 import HomeScreen from '../HomeScreen'
 import DetailsScreen from '../DetailsScreen'
+import {DARK_THEME} from '../../utils/constants'
+import {useAppTheme} from '../../config/theme'
 
 const Stack = createStackNavigator()
 
 const Navigator = () => {
-  const isDarkMode = useColorScheme() === 'dark'
-  const headerTintColor = isDarkMode ? Colors.white : Colors.black
-  const backgroundColor = isDarkMode ? Colors.black : Colors.white
+  const {headerTintColor, backgroundColor} = useAppTheme({
+    isDarkMode: useColorScheme() === DARK_THEME,
+  })
 
   return (
     <NavigationContainer>

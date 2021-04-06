@@ -1,14 +1,15 @@
 import React from 'react'
 import {Image, Text, TouchableOpacity, useColorScheme, View} from 'react-native'
 
-import {Colors} from 'react-native/Libraries/NewAppScreen'
+import {useAppTheme} from '../../config/theme'
 import styles from '../../resources/styles'
 import {ItemProps} from '../../types'
+import {DARK_THEME} from '../../utils/constants'
 
 const Item = ({item, onPressItem}: ItemProps) => {
-  const isDarkMode = useColorScheme() === 'dark'
-  const borderColor = isDarkMode ? Colors.white : Colors.black
-  const color = isDarkMode ? Colors.white : Colors.black
+  const {color, borderColor} = useAppTheme({
+    isDarkMode: useColorScheme() === DARK_THEME,
+  })
 
   return (
     <TouchableOpacity
