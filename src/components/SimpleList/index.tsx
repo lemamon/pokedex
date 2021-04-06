@@ -5,15 +5,15 @@ import {useAppTheme} from '../../config/theme'
 import {DARK_THEME} from '../../utils/constants'
 
 const SimpleList = ({data, title}: SimpleListProps) => {
-  const {color} = useAppTheme({
+  const {color, simpleListStyle} = useAppTheme({
     isDarkMode: useColorScheme() === DARK_THEME,
   })
 
   return (
     <>
-      <Text style={{color, fontSize: 14, marginTop: 10}}>{title}</Text>
+      <Text style={[simpleListStyle.title, {color}]}>{title}</Text>
       {data.map((el: string) => (
-        <Text key={el} style={{color, fontSize: 12}}>
+        <Text key={el} style={[simpleListStyle.item, {color}]}>
           * {el}
         </Text>
       ))}

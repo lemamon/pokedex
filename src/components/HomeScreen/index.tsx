@@ -13,14 +13,9 @@ const HomeScreen = ({navigation}: Props) => {
   const [loading, setLoading] = useState(false)
   const [maxItems, setMaxItems] = useState(1)
 
-  const {backgroundColor, barStyle} = useAppTheme({
+  const {backgroundColor, barStyle, homeStyles} = useAppTheme({
     isDarkMode: useColorScheme() === DARK_THEME,
   })
-
-  const backgroundStyle = {
-    backgroundColor,
-    height: '100%',
-  }
 
   const loadData = async () => {
     if (list.length >= maxItems) return
@@ -65,7 +60,7 @@ const HomeScreen = ({navigation}: Props) => {
   }
 
   return (
-    <SafeAreaView style={[backgroundStyle]}>
+    <SafeAreaView style={[backgroundColor, homeStyles.container]}>
       <StatusBar barStyle={barStyle} />
       <List data={list} fetchData={loadData} onPressItem={onPress} />
     </SafeAreaView>
