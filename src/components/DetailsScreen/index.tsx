@@ -1,14 +1,17 @@
 import React from 'react'
 import {Image, SafeAreaView, Text, useColorScheme, View} from 'react-native'
-
-import {Colors} from 'react-native/Libraries/NewAppScreen'
+import {Props} from '../../types'
 import {capitalize} from '../../utils/utils'
+import {useAppTheme} from '../../config/theme'
+import SimpleList from '../SimpleList'
+import {DARK_THEME} from '../../utils/constants'
 
-const DetailsScreen = ({route}: {route: any}) => {
-  const isDarkMode = useColorScheme() === 'dark'
-  const backgroundColor = isDarkMode ? Colors.darker : Colors.lighter
-  const color = isDarkMode ? Colors.white : Colors.black
+const DetailsScreen = ({route}: Props) => {
   const {pokemon} = route.params
+  const {backgroundColor, color} = useAppTheme({
+    isDarkMode: useColorScheme() === DARK_THEME,
+  })
+
   return (
     <SafeAreaView
       style={{
@@ -50,18 +53,8 @@ const DetailsScreen = ({route}: {route: any}) => {
           }}>
           Name: {capitalize(pokemon.name)}
         </Text>
-        <Text style={{color, fontSize: 14}}>Type(s):</Text>
-        {pokemon.type.map((el: string) => (
-          <Text key={el} style={{color, fontSize: 12}}>
-            * {el}
-          </Text>
-        ))}
-        <Text style={{color, fontSize: 14, marginTop: 10}}>Abilities:</Text>
-        {pokemon.abilities.map((el: string) => (
-          <Text key={el} style={{color, fontSize: 12}}>
-            * {el}
-          </Text>
-        ))}
+        <SimpleList title="Type(s):" data={pokemon.type} />
+        <SimpleList title="Abilities:" data={pokemon.abilities} />
       </View>
     </SafeAreaView>
   )
